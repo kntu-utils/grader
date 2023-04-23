@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django.contrib.staticfiles',
     'myauth',
+    'problems',
     'tinymce',
 ]
 
