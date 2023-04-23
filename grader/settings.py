@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.postgres',
     'django.contrib.staticfiles',
-    'dummy',
+    'myauth',
     'tinymce',
 ]
 
@@ -135,3 +135,7 @@ TINYMCE_DEFAULT_CONFIG = {
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Security and Authentication
+
+AUTH_USER_MODEL = 'myauth.User'
