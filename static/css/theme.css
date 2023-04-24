@@ -1,0 +1,9 @@
+:root {
+    --primary: #FCA326;
+    --secondary: #E24329;
+    --link-fg: #FC6D26;
+    --link-selected-fg: #FCA326;
+}
+*[class^="tox"] {
+    font-family: var(--font-family-primary) !important;
+}

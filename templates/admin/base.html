@@ -3,17 +3,7 @@
 
 {% block extrastyle %}{{ block.super }}
 <link href="{% static 'css/rtl-font.css' %}" rel="stylesheet" type="text/css" />
-<style>
-    :root {
-        --primary: #9774d5;
-        --secondary: #785cab;
-        --link-fg: #7c449b;
-        --link-selected-fg: #8f5bb2;
-    }
-    *[class^="tox"] {
-        font-family: var(--font-family-primary) !important;
-    }
-</style>
+<link href="{% static 'css/theme.css' %}" rel="stylesheet" type="text/css" />
 {% if LANGUAGE_CODE == 'fa-ir' %}
 <style>
     :root {
