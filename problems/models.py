@@ -28,11 +28,14 @@ class ProblemSet(models.Model):
 
 class Problem(models.Model):
     title = models.CharField(max_length=255)
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     number = models.PositiveIntegerField(blank=True, null=True)
     set = models.ForeignKey(ProblemSet, on_delete=models.CASCADE, related_name='problems')
     score = models.PositiveIntegerField()
     content = HTMLField()
     template = models.FilePathField(path=settings.TESTERS_TEMPLATE_DIR, recursive=False, allow_files=False, allow_folders=True)
+    repository_gitlab_id = models.BigIntegerField(unique=True, blank=True)
+    repository_gitlab_path = models.CharField(max_length=255, blank=True)
 
 
 class Repository(models.Model):
