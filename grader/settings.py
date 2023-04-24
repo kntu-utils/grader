@@ -140,3 +140,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Security and Authentication
 
 AUTH_USER_MODEL = 'myauth.User'
+
+# Testers
+
+TESTERS_TEMPLATE_DIR = BASE_DIR / 'testers' / 'templates'
