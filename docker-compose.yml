@@ -1,0 +1,38 @@
+version: "2"
+services:
+  nginx:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: server
+    ports:
+      - "8000:80"
+    restart: always
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
+      POSTGRES_DB: grader
+    volumes:
+      - ./data/postgres/:/var/lib/postgresql/data:rw
+    restart: always
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - ./data/redis/:/data:rw
+  grader:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+      target: runner
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - pg-db
+    command: >
+      sh -c "cd /app &&
+             python manage.py migrate &&
+             daphne --chdir /app termhub.wsgi:application -w 4 -b :8000"
