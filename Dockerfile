@@ -8,10 +8,10 @@ COPY . .
 RUN python manage.py collectstatic --noinput
 
 FROM node:18-alpine AS builder
-WORKDIR /app
+WORKDIR /app/client
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN yarn install --frozen-lockfile
-COPY . .
+COPY client .
 RUN yarn build
 
 FROM nginx:latest AS server
