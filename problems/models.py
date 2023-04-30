@@ -46,7 +46,7 @@ class Repository(models.Model):
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
 
-class Submissions(models.Model):
+class Submission(models.Model):
     class Status(models.TextChoices):
         CREATED = 'CREATED', _('created')
         PENDING = 'PENDING', _('pending')
@@ -67,5 +67,5 @@ class Submissions(models.Model):
     class Meta:
         constraints = (
             models.UniqueConstraint(fields=('repository', 'commit_sha'),
-                                    name='problems_submissions_repository_commit_sha_uniq'),
+                                    name='problems_submission_repository_commit_sha_uniq'),
         )
