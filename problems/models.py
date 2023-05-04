@@ -11,12 +11,20 @@ class Participation(models.Model):
     user = models.ForeignKey('myauth.User', on_delete=models.CASCADE, related_name='participants')
     identifier = models.CharField(max_length=255)
 
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(fields=('course', 'identifier'),
+                                    name='problems_participation_course_identifier_uniq'),
+        )
+
 
 class Course(models.Model):
     title = models.CharField(max_length=255)
     users = models.ManyToManyField('myauth.User', related_name='courses', through=Participation)
     password = models.CharField(max_length=255, blank=True, null=True)
     professor = models.CharField(max_length=255, blank=True, null=True)
+    identifier_field = models.CharField(max_length=255, blank=True, null=True)
+    identifier_text = models.CharField(max_length=255, blank=True)
 
 
 class ProblemSet(models.Model):
@@ -24,6 +32,7 @@ class ProblemSet(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='problem_sets')
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
+    base_content = HTMLField()
 
 
 class Problem(models.Model):
@@ -34,8 +43,8 @@ class Problem(models.Model):
     score = models.PositiveIntegerField()
     content = HTMLField()
     template = models.FilePathField(path=settings.TESTERS_TEMPLATE_DIR, recursive=False, allow_files=False, allow_folders=True)
-    repository_gitlab_id = models.BigIntegerField(unique=True, blank=True)
-    repository_gitlab_path = models.CharField(max_length=255, blank=True)
+    gitlab_id = models.BigIntegerField(unique=True, blank=True)
+    gitlab_path = models.CharField(max_length=255, blank=True)
 
 
 class Repository(models.Model):
@@ -60,7 +69,7 @@ class Submission(models.Model):
     pipeline_id = models.BigIntegerField()
     public_log = models.TextField()
     private_log = models.TextField()
-    score_percentage = models.PositiveIntegerField()
+    score_ratio = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
