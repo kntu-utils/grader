@@ -15,12 +15,34 @@ class Participation(models.Model):
         constraints = (
             models.UniqueConstraint(fields=('course', 'identifier'),
                                     name='problems_participation_course_identifier_uniq'),
+            models.UniqueConstraint(fields=('course', 'user'),
+                                    name='problems_participation_course_user_uniq'),
+        )
+
+
+class Membership(models.Model):
+    course = models.ForeignKey('Course', on_delete=models.CASCADE, related_name='memberships')
+    user = models.ForeignKey('myauth.User', on_delete=models.CASCADE, related_name='memberships')
+    # course permissions
+    can_view_course = models.BooleanField()
+    can_update_course = models.BooleanField()
+    # problems permissions
+    can_view_problems = models.BooleanField()
+    can_add_problems = models.BooleanField()
+    can_update_problems = models.BooleanField()
+    can_delete_problems = models.BooleanField()
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(fields=('course', 'user'),
+                                    name='problems_membership_course_user_uniq'),
         )
 
 
 class Course(models.Model):
     title = models.CharField(max_length=255)
     users = models.ManyToManyField('myauth.User', related_name='courses', through=Participation)
+    members = models.ManyToManyField('myauth.User', through=Membership)
     password = models.CharField(max_length=255, blank=True, null=True)
     professor = models.CharField(max_length=255, blank=True, null=True)
     identifier_field = models.CharField(max_length=255, blank=True, null=True)
