@@ -1,5 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 from os import environ as env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,9 +13,9 @@ DEBUG = bool(env['DEBUG'])
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*']
-
-# Application definition
-
+##########################
+# Application definition #
+##########################
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -23,6 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.postgres',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
     'myauth',
     'problems',
     'tinymce',
@@ -57,9 +60,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'grader.wsgi.application'
-
-# Database
-
+############
+# Database #
+############
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -70,9 +73,9 @@ DATABASES = {
         'PORT': env['POSTGRES_PORT'],
     }
 }
-
-# Password validation
-
+#######################
+# Password validation #
+#######################
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -87,9 +90,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-# Internationalization
-
+########################
+# Internationalization #
+########################
 TITLE = env['TITLE']
 
 LANGUAGE_CODE = env['LANGUAGE']
@@ -101,17 +104,17 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-
+##########################################
+# Static files (CSS, JavaScript, Images) #
+##########################################
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
-
-# Tinymce (Rich text editor)
-
+##############################
+# Tinymce (Rich text editor) #
+##############################
 TINYMCE_DEFAULT_CONFIG = {
     "height": "100vh",
     "width": "100%",
@@ -134,15 +137,31 @@ TINYMCE_DEFAULT_CONFIG = {
     "content_css": '/static/css/rtl-font.css',
     "content_style": "body {font-family: IranSans;font-weight: normal;}" if LANGUAGE_CODE == 'fa-ir' else "",
 }
+##################
+# Rest Framework #
+##################
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+}
 
-# Default primary key field type
-
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+}
+##################################
+# Default primary key field type #
+##################################
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Security and Authentication
-
+###############################
+# Security and Authentication #
+###############################
 AUTH_USER_MODEL = 'myauth.User'
-
-# Testers
-
+###########
+# Testers #
+###########
 TESTERS_TEMPLATE_DIR = BASE_DIR / 'testers' / 'templates'
