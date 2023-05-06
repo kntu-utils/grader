@@ -90,6 +90,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 
+TITLE = env['TITLE']
+
 LANGUAGE_CODE = env['LANGUAGE']
 
 TIME_ZONE = env['TIMEZONE']
